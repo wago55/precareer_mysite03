@@ -1,0 +1,29 @@
+{% load i18n static %}
+<!DOCTYPE html>{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'matching/css/bootstrap.min.css' %}">
+    {% block extra_css %}{% endblock %}
+    <title>{% block title %}My page{% endblock %}</title>
+</head>
+<body>
+<div class="container">
+    {% block content %}
+        {{ content }}
+    {% endblock %}
+</div>
+<script src="{% static 'matching/js/bootstrap.bundle.min.js' %}"></script>
+{# 戻るボタンの実装 #}
+<script>
+    $(function () {
+        $('.page_back').on('click', function () {
+            $(window.history.back());
+        });
+    });
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

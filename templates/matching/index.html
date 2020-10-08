@@ -1,0 +1,29 @@
+{% extends "matching/base.html" %}
+
+{% block content %}
+    {% if user %}
+        <h1>{{ user.username }}さん!ようこそ</h1>
+        <a href="{% url 'matching:user' %}" class="btn btn-primary btn-sm my-4" role="button">プロフィール情報</a>
+        {% if user.is_student %}
+            <a href="{% url 'matching:events_list' %}" class="btn btn-primary btn-sm my-4"
+               role="button">イベント一覧</a>
+            <a href="{% url 'matching:my_events_list' %}" class="btn btn-primary btn-sm my-4"
+               role="button">参加予定のイベント</a>
+        {% endif %}
+        {% if user.enable_host_event %}
+            <a href="{% url 'matching:host_events_list' %}" class="btn btn-primary btn-sm my-4"
+               role="button">主催するイベント一覧</a>
+            <a href="{% url 'matching:analyse_my_event' %}" class="btn btn-primary btn-sm my-4"
+               role="button">分析ページ</a>
+        {% endif %}
+        <a href="{% url 'matching:logout' %}" class="btn btn-danger btn-sm my-4" role="button">ログアウトする</a>
+    {% else %}
+        <h1>ようこそ</h1>
+        <a href="{% url 'matching:login' %}" class="btn btn-primary btn-sm my-4">ログインする</a>
+        <br>
+        <a href="{% url 'matching:student_signup' %}">アカウント作成はこちら</a>
+        <br>
+        <a href="{% url 'matching:recruiter_signup' %}">イベント主催者のアカウント作成はこちら</a>
+    {% endif %}
+
+{% endblock content %}

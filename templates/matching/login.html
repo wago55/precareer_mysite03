@@ -1,0 +1,28 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'matching/css/sanitize.css' %}">
+<link rel=" stylesheet" href="{% static 'matching/css/style.css' %}">
+
+
+<body>
+<div class="content">
+    <h1>ログイン</h1>
+    <p>ユーザー名とパスワードを入力してください</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="control">
+            <label for="username">ユーザー名<span class="required">必須</span></label>
+            {{ form.username.errors }}
+            {{ form.username }}
+        </div>
+        <div class="control">
+            <label for="password">パスワード<span class="required">必須</span></label>
+            {{ form.password.errors }}
+            {{ form.password }}
+        </div>
+        <a href="{% url 'matching:password_reset' %}">パスワードを忘れた場合はこちら</a>
+        <div class="control">
+            <button type="submit" name="login">ログイン</button>
+        </div>
+    </form>
+</div>
+</body>

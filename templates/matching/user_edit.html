@@ -1,0 +1,54 @@
+{% extends "matching/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}プロフィールの編集{% endblock title %}
+
+{% block content %}
+    <h4 class="mt-4 mb-5 border-bottom">プロフィールの編集</h4>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        <div class="form-group row">
+            <div class="offset-md-3 col-md-9">
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </form>
+    <button class="btn btn-danger del_confirm" data-toggle="modal"
+            data-target="#deleteModal" data-url="{% url 'matching:user_del' %}">
+        退会する
+    </button>
+    <button class="btn btn-secondary page_back">戻る</button>
+
+    {# 削除を確認するモーダル ダイアログ #}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>本当に退会しますか？</p>
+                    <p>退会した場合、ユーザー情報は完全に削除されます。</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary" id="del_url" role="button">OK</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(function () {
+            $('.del_confirm').on('click', function () {
+                $('#del_url').attr('href', $(this).data("url"));
+            });
+        });
+    </script>
+{% endblock %}

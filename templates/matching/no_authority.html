@@ -1,0 +1,19 @@
+{% extends 'matching/base.html' %}
+
+{% block title %}NO AUTHORITY{% endblock title %}
+
+{% block content %}
+    <h1>アクセス権限がないページです。</h1>
+    <h1>You did not have an authority for this page.</h1>
+    <button class="btn btn-secondary page_back">戻る</button>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(function () {
+            $('.page_back').on('click', function () {
+                $(window.history.go(-2));
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "matching/base.html" %}
+
+{% block title %}
+    {{ event.name }}の詳細
+{% endblock title %}
+
+{% block content %}
+    <h4 class="mt-4 border-bottom">{{ event.name }}の詳細</h4>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">イベントID</th>
+            <th scope="col">イベント名</th>
+            <th scope="col">開始日時</th>
+            <th scope="col">開催時間</th>
+            <th scope="col">参加可能人数</th>
+            <th scope="col">残り参加人数枠</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{{ event.event_id }}</th>
+            <td>{{ event.name }}</td>
+            <td>{{ event.date }}</td>
+            <td>{{ event.time }}</td>
+            <td>{{ event.participant_num }}</td>
+            <td>{{ event.remaining_participant }}</td>
+        </tr>
+        </tbody>
+    </table>
+    {% if event.event_id in my_event_id_list %}
+        <button class="btn btn-outline-danger btn-sm del_confirm" data-toggle="modal"
+                data-target="#deleteModal" data-name="{{ event.name }}"
+                data-url="{% url 'matching:my_event_del' event_id=event.event_id %}"
+        >
+            練習会を削除する
+        </button>
+    {% elif event.remaining_participant == 0 %}
+    {% else %}
+        <a href="{% url 'matching:my_event_add' event_id=event.event_id %}"
+           class="btn btn-primary btn-sm my-3" role="button">練習会に参加する</a>
+    {% endif %}
+    <a class="btn btn-secondary btn-sm my-4 page_back" role="button">戻る</a>
+{% endblock content %}

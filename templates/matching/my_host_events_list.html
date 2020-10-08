@@ -1,0 +1,93 @@
+{% extends "matching/base.html" %}
+
+{% block title %}主催するイベント一覧{% endblock title %}
+
+{% block content %}
+    <h4 class="mt-4 border-bottom">イベント一覧</h4>
+    <table class="table table-striped table-bordered">
+        <a href="{% url 'matching:host_event_add' %}" class="btn btn-outline-info btn-sm my-4" role="button">
+            イベントを開催する
+        </a>
+        <thead>
+        <tr>
+            <th scope="col">イベントID</th>
+            <th scope="col">イベント名</th>
+            <th scope="col">開始日時</th>
+            <th scope="col">開催時間</th>
+            <th scope="col">参加可能人数</th>
+            <th scope="col">残り参加可能人数</th>
+            <th scope="col">操作</th>
+            <th scope="col">詳細</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in my_host_events %}
+            <tr>
+                <th scope="row">{{ event.event_id }}</th>
+                <td>{{ event.name }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.time }}</td>
+                <td>{{ event.participant_num }}</td>
+                <td>{{ event.remaining_participant }}</td>
+                <td>
+                    <a href="{% url 'matching:host_event_mod' event_id=event.event_id %}"
+                       class="btn btn-outline-success btn-sm my-4" role="button">イベントの修正</a>
+                    <button class="btn btn-outline-danger btn-sm my-3 del_confirm" data-toggle="modal"
+                            data-target="#deleteModal" data-name="{{ event.name }}"
+                            data-url="{% url 'matching:host_event_del' event_id=event.event_id %}">
+                        イベントの削除
+                    </button>
+                </td>
+                <td>
+                    <a href="{% url 'matching:event_detail' event_id=event.event_id %}"
+                       class="btn btn-outline-primary btn-sm my-3" role="button">詳細</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'matching:user' %}" class="btn btn-primary btn-sm my-4" role="button">プロフィール情報</a>
+    {% if user.is_student %}
+        <a href="{% url 'matching:events_list' %}" class="btn btn-primary btn-sm my-4"
+           role="button">イベント一覧</a>
+        <a href="{% url 'matching:my_events_list' %}" class="btn btn-primary btn-sm my-4"
+           role="button">参加予定のイベント</a>
+    {% endif %}
+    {% if user.enable_host_event %}
+        <a href="{% url 'matching:analyse_my_event' %}" class="btn btn-primary btn-sm my-4"
+           role="button">分析ページ</a>
+    {% endif %}
+    <a href="{% url 'matching:logout' %}" class="btn btn-danger btn-sm my-4" role="button">ログアウトする</a>
+
+    {# 削除を確認するモーダル ダイアログ #}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>イベント: <span id="del_name"></span> を削除しますか？</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary" id="del_url" role="button">OK</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(function () {
+            $('.del_confirm').on('click', function () {
+                $("#del_name").text($(this).data("name"));
+                $('#del_url').attr('href', $(this).data("url"));
+            });
+        });
+    </script>
+{% endblock %}

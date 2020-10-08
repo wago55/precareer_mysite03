@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'matching/css/sanitize.css' %}">
+<link rel=" stylesheet" href="{% static 'matching/css/style.css' %}">
+
+<body>
+<div class="content">
+    <h1>サインアップ</h1>
+    <p>ユーザー名、メールアドレス、パスワードを入力してください</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="control">
+                <label for="username">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        {% if "university" in form.fields %}
+            <div class="control">
+                <p><span class="required">指定教育機関のメールアドレスでないとアカウントが削除される場合があります。</span></p>
+            </div>
+            <div class="control">
+                <button type="submit" name="signup">サインアップ</button>
+            </div>
+        {% else %}
+            <div class="control">
+                <button type="submit" name="signup">イベント主催者としてサインアップ</button>
+            </div>
+        {% endif %}
+    </form>
+</div>
+</body>
