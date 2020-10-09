@@ -63,7 +63,7 @@ class UserChangeForm(forms.ModelForm):
     class Meta(object):
         model = User
         fields = ('username', 'email',
-                  'tell', 'profile_image', 'first_name', 'last_name',
+                  'profile_image', 'first_name', 'last_name',
                   'is_student', 'enable_host_event', 'is_active', 'is_admin',
                   ) + \
                  ('nickname',
@@ -88,17 +88,20 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the Student model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username', 'first_name', 'last_name', 'email', 'is_admin', 'enable_host_event', 'is_student')
-    list_filter = ('is_admin', 'enable_host_event', 'is_student')
+    list_display = (
+        'username', 'first_name', 'last_name', 'email',
+        'is_admin', 'enable_join_matching', 'enable_host_event', 'is_student'
+    )
+    list_filter = ('is_admin', 'enable_join_matching', 'enable_host_event', 'is_student')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('email', 'first_name', 'last_name', 'tell', 'profile_image',)}),
+        ('Personal info', {'fields': ('email', 'first_name', 'last_name', 'profile_image',)}),
         ('Student info', {'fields': ('nickname', 'university', 'date_of_birth',
                                      'sex', 'year', 's_and_h',
                                      'major', 'indestry1', 'indestry2', 'indestry3',
                                      'job1', 'job2', 'job3', 'company_type',)}),
         ('Recruiter info', {'fields': ('company_name', 'department_name', 'position',)}),
-        ('Permissions', {'fields': ('enable_host_event', 'is_student', 'is_admin',)}),
+        ('Permissions', {'fields': ('is_student', 'enable_host_event', 'enable_join_matching', 'is_admin',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a student.
@@ -116,20 +119,20 @@ class UserAdmin(BaseUserAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = ('event_id', 'name', 'video_url',)
     list_display_links = ('event_id', 'name')
-    list_filter = ('sex', 'year', 's_and_h', 'major', 'company_type')
+    list_filter = ('year', 's_and_h',)
     readonly_fields = (
-        'min_matching_score', 'recommend_users', 'students', 'created_by', 'created_at', 'updated_at',)
+        'created_by', 'created_at', 'updated_at', 'recommend_users', 'students',)
     fieldsets = (
         (None, {'fields': ('name', 'event_id',)}),
         ('Detail',
          {'fields': (
              'video_url', 'thumbnail', 'date', 'time', 'place', 'event_type_tag', 'participant_num',
              'comment01', 'comment02', 'created_by', 'created_at', 'updated_at')}),
-        ('Parameters', {'fields': ('sex', 'year', 's_and_h',
-                                   'major', 'indestry1', 'indestry2', 'indestry3',
-                                   'job1', 'job2', 'job3', 'company_type',)}),
+        ('Parameters', {'fields': ('year', 's_and_h',
+                                   'indestry1', 'indestry2', 'indestry3',
+                                   )}),
         ('Matching setting',
-         {'fields': ('recommend_users_num', 'enable_matching', 'min_matching_score', 'recommend_users', 'students'), }),
+         {'fields': ('enable_matching', 'recommend_users', 'students'), }),
     )
 
     def save_model(self, request, obj, form, change):

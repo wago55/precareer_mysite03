@@ -145,6 +145,10 @@ def user_edit(request):
             form = RecruiterEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             user = form.save(commit=False)
+            if not user.enable_join_matching:
+                user.enable_join_matching = True
+            if user.enable_join_matching:
+                match.do_match()
             user.save()
             return redirect('matching:user')
     else:
@@ -195,7 +199,7 @@ def no_authority(request):
 
 @login_required(login_url='matching/login.html')
 def events_list(request):
-    """練習会の一覧"""
+    """イベントの一覧"""
     user = request.user
     if not user.is_student:
         return redirect('matching:no_authority')
@@ -216,7 +220,7 @@ def events_list(request):
 
 @login_required(login_url='matching/login.html')
 def retry_matching(request):
-    """練習会一覧ページでのマッチングの更新"""
+    """イベント一覧ページでのマッチングの更新"""
     match.do_match()
 
     return redirect('matching:events_list')
@@ -224,7 +228,7 @@ def retry_matching(request):
 
 @login_required(login_url='matching/login.html')
 def event_detail(request, event_id):
-    """練習会の詳細"""
+    """イベントの詳細"""
 
     user = request.user
     if not user.is_student:

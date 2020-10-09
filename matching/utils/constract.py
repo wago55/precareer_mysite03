@@ -1,91 +1,103 @@
-INFO_TO_INT_DICT = {
-    'user': {
-        'sex': {
-            'man': -1,
-            'others': 0,
-            'woman': 1,
+SEX_CATEGORY = [
+    ('man', '男性'),
+    ('woman', '女性'),
+    ('others', 'その他'),
+]
 
-        },
-        'year': {
-            2022: 2022,
-            2023: 2023,
-            2024: 2024,
-        },
-        's_and_h': {
-            'science': -1,
-            'others': 0,
-            'humanities': 1,
-        },
-        'major': {
-            'law': -2,
-            'economics': -1,
-            'psychology': 0,
-            'engineering': 1,
-            'sciences': 2,
-        },
-        'indestry': {
-            'marketing': -2,
-            'construction': -1,
-            'energy': 0,
-            'chemicals': 1,
-            'media': 2,
-        },
-        'job': {
-            'manager': -2,
-            'engineer': -1,
-            'personnel': 0,
-            'secretary': 1,
-            'clerk': 2,
-        },
-        'company_type': {
-            'large_company': -2,
-            'small_and_medium_company': -1,
-            'mega_venture_company': 1,
-            'venture_company': 2,
-        },
-    },
-    'event': {
-        'sex': {
-            'man': -1,
-            'others': 0,
-            'woman': 1,
-        },
-        'year': {
-            2022: 2022,
-            2023: 2023,
-            2024: 2024,
-        },
-        's_and_h': {
-            'science': -1,
-            'others': 0,
-            'humanities': 1,
-        },
-        'major': {
-            'law': -2,
-            'economics': -1,
-            'psychology': 0,
-            'engineering': 1,
-            'sciences': 2,
-        },
-        'indestry': {
-            'marketing': -2,
-            'construction': -1,
-            'energy': 0,
-            'chemicals': 1,
-            'media': 2,
-        },
-        'job': {
-            'manager': -2,
-            'engineer': -1,
-            'personnel': 0,
-            'secretary': 1,
-            'clerk': 2,
-        },
-        'company_type': {
-            'large_company': -2,
-            'small_and_medium_company': -1,
-            'mega_venture_company': 1,
-            'venture_company': 2,
-        },
-    },
+YEAR_CATEGORY = [
+    (2022, '2022年卒業'),
+    (2023, '2023年卒業'),
+    (2024, '2024年卒業'),
+]
+
+S_AND_H_CATEGORY = [
+    ('science', '理系'),
+    ('humanities', '文系'),
+]
+
+MAJOR_CATEGORY = [
+    ('law', '法学部'),
+    ('economics', '経済学部'),
+    ('psychology', '心理学部'),
+    ('engineering', '工学部'),
+    ('sciences', '理学部'),
+]
+
+INDESTRY_CATEGORY = [
+    (1101, '食品・農林・水産'),
+    (1102, '建設・住宅・インテリア'),
+    (1103, '繊維・化学・薬品・化粧品'),
+    (1104, '鉄鋼・金属・鉱業'),
+    (1105, '機械・プラント'),
+    (1106, '電子・電気機器'),
+    (1107, '自動車・輸送用機器'),
+    (1108, '精密・医療機器'),
+    (1109, '印刷・事務機器関連'),
+    (1110, 'スポーツ・おもちゃ'),
+    (1111, 'その他メーカー'),
+    (1201, '総合商社'),
+    (1202, '専門商社'),
+    (1301, '百貨店・スーパー'),
+    (1302, 'コンビニ'),
+    (1303, '専門店'),
+    (1401, '銀行・証券'),
+    (1402, 'クレジット'),
+    (1403, '信販・リース'),
+    (1404, 'その他金融'),
+    (1405, '生保・損保'),
+    (1501, '不動産'),
+    (1502, '鉄道・航空・運輸・物流'),
+    (1503, '電力・ガス・エネルギー'),
+    (1504, 'フードサービス'),
+    (1505, 'ホテル・旅行'),
+    (1506, '医療・福祉'),
+    (1507, 'アミューズメント・レジャー'),
+    (1508, 'その他サービス'),
+    (1509, 'コンサルティング・調査'),
+    (1510, '人材サービス'),
+    (1511, '教育'),
+    (1601, 'ソフトウェア'),
+    (1602, 'インターネット'),
+    (1603, '通信'),
+    (1701, '放送'),
+    (1702, '新聞'),
+    (1703, '出版'),
+    (1704, '広告'),
+    (1801, '公社・団体'),
+    (1802, '官公庁'),
+]
+
+JOB_CATEGORY = [
+    ('manager', '経営者'),
+    ('engineer', 'エンジニア'),
+    ('personnel', '人事'),
+    ('secretary', '秘書'),
+    ('clerk', '店員'),
+]
+
+COMPANY_TYPE_CATEGORY = [
+    ('large_company', '大企業'),
+    ('small_and_medium_company', '中小企業'),
+    ('mega_venture_company', 'メガベンチャー'),
+    ('venture_company', 'ベンチャー'),
+]
+
+RECRUITER_TYPE = [
+    ('student', '就活生'),
+    ('salon', 'サロン運営者'),
+    ('career_advisor', 'キャリアアドバイザー'),
+    ('corporation', '法人'),
+    ('other', 'その他'),
+]
+
+EVENT_TYPE = [
+    ('group_discussion', 'グループディスカッション'),
+    ('interview', 'インタビュー'),
+    ('information_exchange_meeting', '情報交換会'),
+    ('other', 'その他'),
+]
+
+S_AND_H_TO_INT = {
+    'science': -1,
+    'humanities': 1,
 }

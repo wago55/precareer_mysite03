@@ -1,44 +1,59 @@
-from . import algo
 from .models import Event, User
+from .utils import utils
+
+
+class EventImportError(ImportError):
+    pass
+
+
+class UserImportError(ImportError):
+    pass
 
 
 def do_match():
-    events = Event.objects.all()
-    event_int_lists = [algo.set_int_list(event, key='event') for event in events]
-    user_int_lists = [algo.set_int_list(user, key='user') for user in User.objects.filter(is_student=True)]
+    try:
+        events = Event.objects.all()
+    except EventImportError:
+        return
+    try:
+        user_int_lists = [utils.set_int_dict(user, key='user') for user in
+                          User.objects.filter(enable_join_matching=True)]
+    except UserImportError:
+        return
 
-    for event_int_list, event in zip(event_int_lists, events):
-        rank_num = event.recommend_users_num
-        min_score = None
-        if rank_num == 0:
-            rank_num = 5
+    if len(events) == 0 or len(user_int_lists) == 0:
+        return
 
-        if (len(user_int_lists) <= rank_num or
-                event.enable_matching):
-            recommend = [user[0] for user in user_int_lists]
-        else:
-            rank = []
-            for user_int_list in user_int_lists:
-                rank.append(
-                    [user_int_list[0],
-                     algo.scoring_for_users(user=user_int_list[1:], event=event_int_list[1:])]
-                )
-            rank = sorted(rank, key=lambda r: r[-1])
-            min_score = rank[rank_num - 1][-1]
+    for event in events:
+        event_int_dict = utils.set_int_dict(event, key='event')
+        recommend = []
 
-            recommend = [data[0] for data in rank[:rank_num]]
-            if rank[rank_num][-1] == min_score:
-                for user in rank[rank_num + 1:]:
-                    if user[-1] != min_score:
-                        break
-                    else:
-                        recommend.append(user[0])
+        for user in user_int_lists:
+            """卒業年マッチ"""
+            if type(event_int_dict['year']) == int:
+                if int(user['year']) == event_int_dict['year']:
+                    recommend.append(user['id'])
+                    continue
+            else:
+                if int(user['year']) in event_int_dict['year']:
+                    recommend.append(user['id'])
+                    continue
 
-        event.recommend_users = ','.join([str(id) for id in recommend])
-        if min_score:
-            event.min_matching_score = min_score
+            """理文マッチ"""
+            if user['s_and_h'] == event_int_dict['s_and_h'] or event_int_dict['s_and_h'] == 0:
+                recommend.append(user['id'])
+                continue
 
-        event.save()
+            """志望業界マッチ"""
+            if (event_int_dict['indestry'] == 0 or
+                    user['indestry'][0] in event_int_dict['indestry'] or
+                    user['indestry'][1] in event_int_dict['indestry'] or
+                    user['indestry'][2] in event_int_dict['indestry']):
+                recommend.append(user['id'])
+                continue
+
+    event.recommend_users = ','.join([str(id) for id in recommend])
+    event.save()
 
 
 def search_possible_event(user_id):
